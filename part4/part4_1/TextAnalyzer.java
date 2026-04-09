@@ -45,7 +45,7 @@ public class TextAnalyzer {
      */
     public int wordCount() {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: верните text.split(" ").length
+        return text.split(" ").length;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -60,7 +60,11 @@ public class TextAnalyzer {
         String[] words = text.split(" ");
         String best = words[0];
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        for (String w : words) {
+            if (w.length() > best.length()) {
+                best = w;
+            }
+        }
 
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         return best;
@@ -106,7 +110,7 @@ public class TextAnalyzer {
             count++;
             from = idx + 1;
         }
-        return 0; // ???
+        return count;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 

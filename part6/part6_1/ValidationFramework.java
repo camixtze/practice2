@@ -9,22 +9,6 @@ import java.util.List;
  * Задание 6.1 (Часть B) — Мини-фреймворк валидации с аннотациями и Reflection
  *
  * Тема: Reflection API, собственные аннотации.
- *
- * Ключевая теория:
- *   - obj.getClass().getDeclaredFields() — получить все поля объекта.
- *   - field.setAccessible(true) — разрешить чтение private-полей.
- *   - field.isAnnotationPresent(NotEmpty.class) — проверить наличие аннотации.
- *   - field.getAnnotation(Range.class).min() — получить параметр аннотации.
- *
- * Ожидаемый вывод:
- *
- *     === Валидация корректной формы ===
- *     Все поля валидны!
- *
- *     === Валидация некорректной формы ===
- *       - Имя обязательно
- *       - Поле не может быть пустым
- *       - Возраст должен быть от 18 до 120
  */
 public class ValidationFramework {
 
@@ -87,30 +71,31 @@ public class ValidationFramework {
         public static List<String> validate(Object obj) {
 
             List<String> errors = new ArrayList<>();
+            // Получаем все поля объекта
             for (Field field : obj.getClass().getDeclaredFields()) {
-                field.setAccessible(true);
+                field.setAccessible(true); // Разрешаем доступ к private-полям
                 try {
+                    // Проверяем аннотацию @NotEmpty
                     if (field.isAnnotationPresent(NotEmpty.class)) {
-                        String s = (String) field.get(obj);
+                        String value = (String) field.get(obj); // Получаем значение поля
                         NotEmpty ann = field.getAnnotation(NotEmpty.class);
-                        if (s == null || s.isEmpty()) {
-                            errors.add(ann.message());
+                        if (value == null || value.isEmpty()) {
+                            errors.add(ann.message()); // Добавляем ошибку если поле пустое
                         }
                     }
+                    // Проверяем аннотацию @Range
                     if (field.isAnnotationPresent(Range.class)) {
-                        int v = field.getInt(obj);
+                        int value = field.getInt(obj); // Получаем значение поля
                         Range ann = field.getAnnotation(Range.class);
-                        if (v < ann.min() || v > ann.max()) {
-                            errors.add(ann.message());
+                        if (value < ann.min() || value > ann.max()) {
+                            errors.add(ann.message()); // Добавляем ошибку если значение вне диапазона
                         }
                     }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return new ArrayList<>();//???????????
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            return errors; // Возвращаем список ошибок
         }
     }
 

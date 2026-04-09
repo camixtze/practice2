@@ -7,27 +7,11 @@ import java.lang.reflect.Method;
  * Задание 6.1 (Часть A) — Исправьте мета-аннотации
  *
  * Тема: собственные аннотации и мета-аннотации.
- *
- * Ключевая теория:
- *   - Аннотация объявляется через @interface.
- *   - @Retention — когда аннотация доступна:
- *     SOURCE (только код), CLASS (байткод), RUNTIME (через Reflection).
- *   - @Target — к чему применяется:
- *     METHOD, FIELD, TYPE, PARAMETER.
- *   - Элемент аннотации: тип имя() default значение;
- *
- * Задача: исправьте значения @Retention и @Target,
- * чтобы аннотация была доступна через Reflection и применялась к методам.
- *
- * Подсказка: запустите программу сначала как есть — аннотации НЕ будут найдены.
- * Затем исправьте две строки и запустите снова.
  */
 
-// TODO: замените SOURCE на правильную политику, чтобы аннотация была доступна через Reflection
-// Подсказка: SOURCE → стирается при компиляции, CLASS → только в байткоде, RUNTIME → доступна через Reflection
-@Retention(RetentionPolicy.SOURCE)
-// Вопрос: почему здесь указано METHOD? Что будет, если заменить на TYPE или FIELD?
-@Target(ElementType.METHOD)
+// Исправлено: аннотация теперь доступна через рефлексию
+@Retention(RetentionPolicy.RUNTIME) // Заменили SOURCE на RUNTIME
+@Target(ElementType.METHOD) // Применяется к методам
 @interface TestInfo {
     String author();
     String date();
@@ -37,7 +21,6 @@ import java.lang.reflect.Method;
 
 /**
  * Демонстрационный класс с аннотированными методами.
- * После заполнения пропусков программа выведет информацию об аннотациях.
  */
 class Calculator {
 
@@ -59,6 +42,7 @@ class Calculator {
 
         System.out.println("=== Анализ аннотаций @TestInfo ===\n");
 
+        // Используем Reflection для получения аннотаций
         for (Method method : Calculator.class.getDeclaredMethods()) {
             if (method.isAnnotationPresent(TestInfo.class)) {
                 TestInfo info = method.getAnnotation(TestInfo.class);
@@ -68,7 +52,7 @@ class Calculator {
                 System.out.println("  Описание: " + info.description());
                 System.out.println("  Приоритет: " + info.priority());
                 System.out.print("  Результат: ");
-                method.invoke(calc);
+                method.invoke(calc); // Вызываем метод
                 System.out.println();
             }
         }

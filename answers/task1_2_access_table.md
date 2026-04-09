@@ -19,11 +19,11 @@
 
 | Строка | Обращаемый член | Модификатор | Компилируется? (да/нет) | Причина |
 |--------|----------------|-------------|:-----------------------:|---------|
-| A | `emp.name` | | | |
-| B | `emp.age` | | | |
-| C | `emp.salary` | | | |
-| D | `emp.password` | | | |
-| E | `emp.getRole()` | | | |
-| F | `emp.promote(5000)` | | | |
-| G | `emp.printSummary()` | | | |
-| H | `emp.validatePassword("secret")` | | | |
+| A | `emp.name` | public | да | public доступен из любого пакета |
+| B | `emp.age` | protected | нет | другой пакет и нет наследования |
+| C | `emp.salary` | package-private | нет | доступ только внутри пакета company.core |
+| D | `emp.password` | private | нет | доступ только внутри класса Employee |
+| E | `emp.getRole()` | public | да | public метод доступен из любого пакета |
+| F | `emp.promote(5000)` | protected | нет | другой пакет и нет наследования |
+| G | `emp.printSummary()` | package-private | нет | доступ только внутри пакета company.core |
+| H | `emp.validatePassword("secret")` | private | нет | доступ только внутри класса Employee |

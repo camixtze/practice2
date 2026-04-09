@@ -32,7 +32,8 @@ public interface Loggable {
      */
     default void log(String message) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        System.out.println("[" + formatTimestamp() + "] [" + getComponentName() + "] " + message);
+// ▲ КОНЕЦ ВАШЕГО КОДА ▲
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -43,7 +44,7 @@ public interface Loggable {
      */
     default void logError(String message) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        log("ОШИБКА: " + message);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -55,7 +56,7 @@ public interface Loggable {
      */
     private String formatTimestamp() {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: верните LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        return "INFO";
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
